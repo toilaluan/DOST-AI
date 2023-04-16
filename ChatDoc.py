@@ -1,10 +1,14 @@
 from utils import *
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+client = MongoClient('mongodb://localhost:27017/')
+import pandas as pd
 class ChatDoc:
-    def __init__(self, link):
-        link = link.split('/')
-        self.id = link[link.index('d')+1]
-        self.doc = read_pdf(self.id)
-        self.doc_embeds = doc_to_embeddings(self.doc)
-        print(self.doc_embeds)
+    def __init__(self, id):
+        db = client['doc_stock']
+        docs = db['docs']
+        doc_id = ObjectId(id)
+        doc = docs.find_one({'_id': doc_id})
+        self.doc_embeds = pd.DataFrame(doc['embed'])
     def doc_query(self, q):
         return query(self.doc_embeds, q)
