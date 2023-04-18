@@ -1,0 +1,10 @@
+We have provided context information below, which is the first text from a book, you should pay attention to something like title, table of content, bullet points: \n"
+---------------------\n
+###
+{context}
+###
+---------------------\n
+Given this information generate title, summary, tags. Each title, summary, tags in a separated line, for example:
+Title: ...
+Summary: ...
+Tags: tag 1, tag 2

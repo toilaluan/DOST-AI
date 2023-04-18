@@ -1,8 +1,6 @@
-from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.vectorstores import Chroma
-from langchain.text_splitter import TokenTextSplitter, CharacterTextSplitter, RecursiveCharacterTextSplitter
-from langchain.llms import OpenAI
+from langchain.text_splitter import TokenTextSplitter
 from langchain.document_loaders import UnstructuredPDFLoader
 import gdown
 import os

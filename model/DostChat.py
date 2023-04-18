@@ -35,10 +35,7 @@ class DostChat:
         )
         self.n_pages = len(self.chroma._collection.get(0)['documents'])
 
-    async def init_query(self):
-        k = 2
-        docs = self.chroma._collection.get(0)['documents'][:k]
-        context = ' '.join(doc for doc in docs)
+    async def init_chat_query(self):
         with open('model/prompts/init_prompt.txt', 'r') as f:
             init_prompt = f.readlines()
             init_prompt = ''.join(x for x in init_prompt)
