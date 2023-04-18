@@ -1,2 +1,9 @@
 cached/
 __pycache__/
+cached_file.pdf
+.env
+.chroma
+.cached
+.ipynb_checkpoints
+chroma
+experiments

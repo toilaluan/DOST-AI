@@ -1,0 +1,1 @@
+from .init_embedding import store_embeddings

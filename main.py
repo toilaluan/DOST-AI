@@ -1,9 +1,13 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 import openai
-from ChatDoc import ChatDoc
-from init_embedding import store_embeddings
-openai.api_key = "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"
+from services import store_embeddings
+from model import DostChat
+import os
+from dotenv import load_dotenv
+import asyncio
+load_dotenv()
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
 class MyApp(FastAPI):
@@ -16,23 +20,26 @@ class MyApp(FastAPI):
         @self.post("/init")
         async def init(data: dict):
             id = data.get("id")
-            self.baseDoc = ChatDoc(id)
-            return "ready for chat"
+            self.baseDoc = DostChat(id)
+            return "ready"
 
         @self.websocket("/ws")
         async def websocket_endpoint(websocket: WebSocket):
             await websocket.accept()
-            init_mes = self.baseDoc.doc_query('introduce you as a assistant, who help for query about this document')
-            print(init_mes)
+            response = asyncio.wait_for(self.baseDoc.init_query(), timeout=50)
+            init_mes = await response
             await websocket.send_text(init_mes)
             while True:
                 data = await websocket.receive_text()
-                reply = self.baseDoc.doc_query(data)
+                response = asyncio.wait_for(self.baseDoc.doc_query(str(data)), timeout=50)
+                reply = await response
                 await websocket.send_text(reply)
+
         @self.post("/upload_init_embed")
         async def init_embed(data: dict):
             id = data.get("id")
-            store_embeddings(id)
+            await store_embeddings(id)
             return "updated embeds"
+
 
 app = MyApp()
