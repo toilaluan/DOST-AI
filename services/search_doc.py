@@ -1,5 +1,6 @@
 import os
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 import chromadb
 from pymongo import MongoClient
@@ -16,7 +17,7 @@ DOC_EMBED_COLLECTION = os.environ.get("DOC_EMBED_COLLECTION")
 def search_doc(query: str):
     persist_directory = os.path.join(CHROMA_ROOT, DOC_EMBED_COLLECTION)
 
-    embeddings = HuggingFaceEmbeddings()
+    embeddings = OpenAIEmbeddings()
     chroma = Chroma(
         collection_name=DOC_EMBED_COLLECTION,
         embedding_function=embeddings,
